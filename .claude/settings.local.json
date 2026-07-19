@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm -v)",
+      "Bash(npm ping *)",
+      "Read(//usr/local/bin/**)",
+      "Bash(command -v brew node npm pnpm yarn bun python3)",
+      "Bash([ -s \"$HOME/.nvm/nvm.sh\" ])",
+      "Read(//Users/dalerkaliakbarov/.nvm/versions/**)",
+      "Bash(curl -sI --max-time 8 https://fonts.gstatic.com/)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(curl -sI --max-time 8 https://unpkg.com/)",
+      "Bash(curl -s --max-time 20 \"https://www.sefaria.org/api/texts/versions/Psalms\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(v.get\\('language'\\),'|',v.get\\('versionTitle'\\),'|',v.get\\('license'\\)\\) for v in d]\")",
+      "Bash(curl -s --max-time 20 \"https://www.sefaria.org/api/v3/texts/Psalms%2023?return_format=text_only\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -)"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+/* DailyTanakh — mobile bottom-nav + print */
+
+/* ===== mobile bottom nav ===== */
+.tabbar{display:none}
+@media (max-width:760px){
+  .nav{display:none}
+  .tabbar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;height:64px;padding-bottom:env(safe-area-inset-bottom);
+    background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line)}
+  .tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    color:var(--muted);font-size:.66rem;font-weight:600;transition:color var(--t-fast)}
+  .tabbar a svg{width:22px;height:22px;transition:transform var(--t-fast) var(--ease-spring)}
+  .tabbar a.active{color:var(--blue)}
+  .tabbar a.active svg{transform:translateY(-2px)}
+  .main{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+}
+@media (max-width:760px){
+  .verse .he-text{font-size:1.42rem}
+  .verse .tr-text{font-size:1.05rem}
+  .hide-sm{display:none!important}
+}
+@media (min-width:761px){.show-sm{display:none!important}}
+
+/* the dedicated print container lives hidden until printing */
+.print-doc{display:none}
+
+/* ===================== PRINT ===================== */
+@media print{
+  @page{margin:18mm 16mm}
+  :root{--ink:#000;--ink-2:#1a1a1a;--muted:#555;--line:#ccc}
+  html,body{background:#fff!important;color:#000!important}
+  body::before{display:none}
+  .app,.header,.tabbar,.toasts,.scrim,.sheet,.no-print{display:none!important}
+  .print-doc{display:block!important;font-family:var(--font-serif);color:#000;max-width:100%}
+  .print-doc *{box-shadow:none!important}
+  .print-doc .p-head{text-align:center;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:18px}
+  .print-doc .p-brand{font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:#444;font-family:var(--font-ui)}
+  .print-doc .p-title{font-size:1.7rem;font-weight:700;margin-top:6px}
+  .print-doc .p-sub{font-size:.92rem;color:#444;margin-top:4px;font-family:var(--font-ui)}
+  .print-doc .p-verse{margin-bottom:11px;break-inside:avoid;page-break-inside:avoid}
+  .print-doc .p-num{font-weight:700;font-size:.7rem;color:#666;vertical-align:super;margin-inline-end:5px;font-family:var(--font-ui)}
+  .print-doc .p-he{font-family:var(--font-hebrew);direction:rtl;text-align:right;font-size:1.5rem;line-height:1.9;margin-bottom:2px}
+  .print-doc .p-tr{font-size:1.05rem;line-height:1.55}
+  .print-doc .p-tr.rtl{direction:rtl;text-align:right;font-family:var(--font-hebrew)}
+  .print-doc .p-comm{margin-top:4px;font-size:.86rem;color:#333;border-inline-start:2px solid #bbb;padding-inline-start:9px}
+  .print-doc .p-comm b{font-weight:700}
+  .print-doc .p-foot{margin-top:22px;padding-top:10px;border-top:1px solid #999;font-size:.72rem;color:#666;
+    font-family:var(--font-ui);display:flex;justify-content:space-between;gap:12px}
+  .print-doc .p-note{margin-top:4px;font-size:.9rem;font-style:italic;color:#333}
+}
