@@ -7,6 +7,7 @@ import { t } from './lib/i18n.js';
 import { Icon } from './lib/icons.js';
 import { Header, TabBar } from './components/chrome.js';
 import { ToastHost } from './components/ui.js';
+import { settings } from './lib/store.js';
 import { Home } from './views/home.js';
 import { Reader } from './views/reader.js';
 import { Library, Book } from './views/library.js';
@@ -14,6 +15,8 @@ import { Cycle } from './views/cycle.js';
 import { Profile } from './views/profile.js';
 import { Settings } from './views/settings.js';
 import { About } from './views/about.js';
+import { ModePick } from './views/mode.js';
+import { KidsHome, KidsLibrary, KidsStory, KidsAwards } from './views/kids.js';
 
 function NotFound() {
   return html`<div class="container main"><div class="empty">
@@ -25,6 +28,16 @@ function NotFound() {
 
 function resolve(parts) {
   const a = parts[0];
+  // режим ещё не выбран — показываем экран выбора
+  if (!settings.value.mode && a !== 'mode') return html`<${ModePick} />`;
+  if (a === 'mode') return html`<${ModePick} />`;
+  if (a === 'kids') {
+    const b = parts[1];
+    if (b === 'library') return html`<${KidsLibrary} />`;
+    if (b === 'story') return html`<${KidsStory} />`;
+    if (b === 'awards') return html`<${KidsAwards} />`;
+    return html`<${KidsHome} />`;
+  }
   if (!a || a === 'today') return html`<${Home} />`;
   if (a === 'start') return html`<${Cycle} />`;
   if (a === 'library') return html`<${Library} />`;
@@ -39,12 +52,16 @@ function resolve(parts) {
 function App() {
   const r = route.value;
   const a = r.parts[0];
-  // keep Reader/Book mounted across chapter changes; remount other pages for entrance anim
-  const key = a === 'read' ? 'read:' + r.parts[1] : a === 'book' ? 'book:' + r.parts[1] : (a || 'home');
+  // на экране выбора режима прячем шапку и таб-бар
+  const bare = !settings.value.mode || a === 'mode';
+  const key = a === 'read' ? 'read:' + r.parts[1]
+    : a === 'book' ? 'book:' + r.parts[1]
+    : a === 'kids' ? 'kids:' + (r.parts[1] || '') + ':' + (r.parts[2] || '')
+    : (a || 'home');
   return html`<div class="app">
-    <${Header} />
+    ${!bare && html`<${Header} />`}
     <main>${html`<div key=${key} style="display:contents">${resolve(r.parts)}</div>`}</main>
-    <${TabBar} />
+    ${!bare && html`<${TabBar} />`}
     <${ToastHost} />
   </div>`;
 }

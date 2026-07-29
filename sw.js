@@ -1,5 +1,5 @@
 // DailyTanakh service worker — offline-first.
-const CACHE = 'dailytanakh-v7';
+const CACHE = 'dailytanakh-v8';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './src/main.js',
@@ -14,6 +14,11 @@ const CORE = [
   './src/views/home.js', './src/views/reader.js', './src/views/library.js',
   './src/views/cycle.js', './src/views/profile.js', './src/views/settings.js', './src/views/about.js',
   './data/books.json',
+  './data/kids.json',
+  './src/lib/kids.js',
+  './src/views/kids.js',
+  './src/views/mode.js',
+  './src/styles/kids.css',
 ];
 
 self.addEventListener('install', (e) => {

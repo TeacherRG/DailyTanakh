@@ -13,6 +13,8 @@ const DEFAULTS = {
   fontScale: 1,
   notify: { enabled: false, time: '08:00' },
   onboarded: false,
+  mode: null,               // null (не выбран) | 'adult' | 'kids'
+  kidsStart: null,          // ISO даты старта детского годового цикла
 };
 const PROFILE = {
   lastRead: null,                                   // { slug, chapter, verse, ts }
@@ -21,6 +23,9 @@ const PROFILE = {
   notes: [],                                        // { id, slug, chapter, verse, text, ts, updated }
   favorites: [],                                    // { id, slug, chapter, verse, he, tr, lang, ts }
   joinDate: null,
+  kidsRead: {},                                     // { "<номер истории>": ts }
+  kidsStars: [],                                    // [номера любимых историй]
+  kidsStreak: { count: 0, lastDay: null, best: 0 },
 };
 
 function persisted(key, defaults) {
@@ -146,6 +151,7 @@ effect(() => {
   el.lang = s.uiLang;
   el.dir = i18nDir.value;
   el.dataset.theme = resolvedTheme.value;
+  el.dataset.mode = s.mode || 'adult';
   el.style.setProperty('--reader-scale', s.fontScale);
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.content = resolvedTheme.value === 'dark' ? '#0a0f1d' : '#ffffff';

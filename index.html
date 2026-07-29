@@ -25,6 +25,7 @@
         de.dataset.theme = dark ? 'dark' : 'light';
         var l = s.uiLang || 'ru';
         de.lang = l; de.dir = (l === 'he') ? 'rtl' : 'ltr';
+        de.dataset.mode = s.mode || 'adult';
         if (s.fontScale) de.style.setProperty('--reader-scale', s.fontScale);
         var mc = document.querySelector('meta[name="theme-color"]');
         if (mc) mc.content = dark ? '#0a0f1d' : '#ffffff';
@@ -39,6 +40,7 @@
   <link rel="stylesheet" href="src/styles/fonts.css" />
   <link rel="stylesheet" href="src/styles/base.css" />
   <link rel="stylesheet" href="src/styles/components.css" />
+  <link rel="stylesheet" href="src/styles/kids.css" />
   <link rel="stylesheet" href="src/styles/print.css" />
 
   <script type="importmap">

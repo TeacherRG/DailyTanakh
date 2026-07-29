@@ -2,6 +2,7 @@ import { html, useSignal, useRef } from '../lib/html.js';
 import { t, lang, LOCALES, LANGS } from '../lib/i18n.js';
 import { settings, setSettings, setNotify, toggleTransLang, resetProgress, exportData, importData, toast } from '../lib/store.js';
 import { navigate } from '../lib/router.js';
+import { todayISO } from '../lib/schedule.js';
 import * as notify from '../lib/notify.js';
 import { setupReminders } from '../lib/reminders.js';
 import { Icon } from '../lib/icons.js';
@@ -55,8 +56,29 @@ export function Settings() {
     } else { setNotify({ enabled: false }); setupReminders(); }
   };
 
+  const setMode = (m) => {
+    const patch = { mode: m };
+    if (m === 'kids' && !s.kidsStart) patch.kidsStart = todayISO();
+    setSettings(patch);
+    navigate(m === 'kids' ? '/kids' : '/');
+    toast(t('toast.settingsSaved'), 'check');
+  };
+
   return html`<div class="container main" style="max-width:760px">
     <div class="page-head rise"><h1 class="display">${t('settings.title')}</h1></div>
+
+    <${Group} title=${t('mode.section')}>
+      <div class="set-row"><div class="grow">
+        <div class="lab">${t('mode.current')}</div>
+        <div class="hint">${s.mode === 'kids' ? t('mode.kidsBody') : t('mode.adultBody')}</div>
+      </div></div>
+      <div style="padding:0 18px 18px"><div class="mode-switch">
+        <button class=${'mode-chip' + (s.mode !== 'kids' ? ' on' : '')} onClick=${() => setMode('adult')}>
+          <${Icon} name="bookOpen" size=18 />${t('mode.adultTitle')}</button>
+        <button class=${'mode-chip' + (s.mode === 'kids' ? ' on' : '')} onClick=${() => setMode('kids')}>
+          <${Icon} name="sparkles" size=18 />${t('mode.kidsTitle')}</button>
+      </div></div>
+    <//>
 
     <${Group} title=${t('settings.appearance')}>
       <${Row} label=${t('settings.theme')}>

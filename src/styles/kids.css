@@ -1,0 +1,166 @@
+/* DailyTanakh — детский режим: теплее, крупнее, дружелюбнее (но по-прежнему строго) */
+
+/* ---------- палитра ---------- */
+[data-mode="kids"]{
+  --kid-sun:#e8a33d;
+  --kid-sun-2:#d98723;
+  --kid-sky:#3d7ad9;
+  --kid-leaf:#3fa07a;
+  --kid-berry:#c9527e;
+  --kid-grape:#7a5cc4;
+  --read-w:44rem;
+}
+[data-mode="kids"][data-theme="light"]{
+  --bg:#fbf6ec;
+  --bg-grad:radial-gradient(1100px 560px at 82% -12%, #fdeccd 0%, rgba(253,236,205,0) 62%),
+            radial-gradient(900px 480px at -8% 0%, #e9f2fb 0%, rgba(233,242,251,0) 58%);
+  --surface:#fffdf8;
+  --surface-2:#f5eddd;
+  --surface-3:#ece0c9;
+  --ink:#2a2118;
+  --ink-2:#4d4133;
+  --muted:#7d6f5d;
+  --faint:#a6977f;
+  --line:rgba(90,66,30,.13);
+  --line-2:rgba(90,66,30,.22);
+  --blue:#c07d1e;
+  --blue-2:#a96712;
+  --blue-ink:#6d4409;
+  --blue-tint:#fbeed3;
+  --blue-tint-2:#f6e2b8;
+  --on-blue:#fffdf8;
+  --shadow-blue:0 10px 28px -8px rgba(192,125,30,.42);
+}
+[data-mode="kids"][data-theme="dark"]{
+  --bg:#161109;
+  --bg-grad:radial-gradient(1100px 560px at 82% -12%, #3a2a10 0%, rgba(58,42,16,0) 60%),
+            radial-gradient(900px 480px at -8% 0%, #14243a 0%, rgba(20,36,58,0) 58%);
+  --surface:#1f1810;
+  --surface-2:#2a2015;
+  --surface-3:#3a2c1c;
+  --ink:#f6ecdc;
+  --ink-2:#dbcbb2;
+  --muted:#a1907a;
+  --faint:#6f6152;
+  --line:rgba(255,225,180,.10);
+  --line-2:rgba(255,225,180,.18);
+  --blue:#f0b452;
+  --blue-2:#e2a139;
+  --blue-ink:#f8d79a;
+  --blue-tint:#33260f;
+  --blue-tint-2:#433114;
+  --on-blue:#1a1409;
+  --shadow-blue:0 12px 32px -10px rgba(240,180,82,.4);
+}
+
+/* ---------- крупнее и мягче ---------- */
+[data-mode="kids"] .card{border-radius:var(--r-xl)}
+[data-mode="kids"] .btn{border-radius:var(--r-md);font-size:1rem;padding:12px 20px}
+[data-mode="kids"] .btn-lg{padding:16px 28px;font-size:1.08rem;border-radius:var(--r-lg)}
+[data-mode="kids"] .page-head h1{font-size:clamp(1.8rem,4.2vw,2.4rem)}
+[data-mode="kids"] .hero{border-radius:28px;
+  background:linear-gradient(135deg,var(--kid-sun) 0%,var(--kid-sun-2) 48%,var(--kid-berry) 130%)}
+[data-mode="kids"] .section-head h2::before{background:linear-gradient(var(--kid-sun),var(--kid-berry))}
+
+/* ---------- экран выбора режима ---------- */
+.mode-pick{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:var(--sp-6) var(--sp-5);text-align:center}
+.mode-pick .brand-big{display:flex;align-items:center;gap:12px;font-size:1.5rem;font-weight:700;
+  letter-spacing:-.02em;margin-bottom:var(--sp-3)}
+.mode-pick h1{font-family:var(--font-serif);font-size:clamp(1.7rem,4.4vw,2.5rem);margin-bottom:10px}
+.mode-pick .sub{color:var(--muted);max-width:34rem;line-height:1.6;margin-bottom:var(--sp-7)}
+.mode-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-5);
+  width:100%;max-width:44rem}
+@media (max-width:660px){.mode-cards{grid-template-columns:1fr}}
+.mode-card{position:relative;overflow:hidden;padding:30px 26px;text-align:start;cursor:pointer;
+  border:2px solid var(--line);border-radius:var(--r-xl);background:var(--surface);
+  transition:transform var(--t-med) var(--ease-out),box-shadow var(--t-med),border-color var(--t-med)}
+.mode-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.mode-card .ic{width:64px;height:64px;border-radius:20px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;color:#fff}
+.mode-card.adult .ic{background:linear-gradient(135deg,#2456d6,#1d4ed8)}
+.mode-card.kids .ic{background:linear-gradient(135deg,#e8a33d,#c9527e)}
+.mode-card.adult:hover{border-color:#2456d6}
+.mode-card.kids:hover{border-color:#e8a33d}
+.mode-card h2{font-size:1.3rem;margin-bottom:8px}
+.mode-card p{color:var(--muted);line-height:1.6;font-size:.95rem}
+.mode-card .feats{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.mode-card .feats div{display:flex;align-items:center;gap:9px;font-size:.9rem;color:var(--ink-2)}
+.mode-card .feats svg{color:var(--blue);flex:none}
+.mode-card.kids .feats svg{color:var(--kid-sun-2)}
+.mode-pick .note{margin-top:var(--sp-6);font-size:.85rem;color:var(--faint);max-width:32rem}
+
+/* ---------- путь по историям ---------- */
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:var(--sp-3)}
+.story-card{position:relative;display:flex;gap:14px;align-items:flex-start;padding:16px 18px;cursor:pointer;overflow:hidden}
+.story-card .num{width:42px;height:42px;flex:none;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1rem;background:var(--surface-2);color:var(--muted);
+  font-variant-numeric:tabular-nums;transition:all var(--t-med) var(--ease-spring)}
+.story-card.done .num{background:linear-gradient(135deg,var(--kid-leaf),#2f8563);color:#fff}
+.story-card.today .num{background:linear-gradient(135deg,var(--kid-sun),var(--kid-sun-2));color:#fff;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--kid-sun) 25%,transparent)}
+.story-card .t{font-weight:600;line-height:1.35}
+.story-card .b{font-size:.8rem;color:var(--muted);margin-top:3px}
+.story-card .star{position:absolute;top:12px;inset-inline-end:12px;color:var(--kid-sun);opacity:.9}
+.story-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+
+/* ---------- читалка историй ---------- */
+.story{max-width:var(--read-w);margin-inline:auto}
+.story .lede{font-family:var(--font-serif);font-size:1.22rem;line-height:1.65;color:var(--ink-2);
+  padding:18px 22px;border-radius:var(--r-lg);background:var(--blue-tint);
+  border-inline-start:5px solid var(--blue);margin-bottom:var(--sp-6)}
+.story h2{font-family:var(--font-serif);font-size:1.42rem;margin:var(--sp-7) 0 var(--sp-3);
+  display:flex;align-items:center;gap:10px}
+.story h2::before{content:"";width:9px;height:9px;border-radius:50%;flex:none;
+  background:linear-gradient(var(--kid-sun),var(--kid-berry))}
+.story p{font-family:var(--font-serif);font-size:calc(1.14rem * var(--reader-scale,1));line-height:1.78;
+  color:var(--ink-2);margin-bottom:var(--sp-4)}
+.story .quote{margin:var(--sp-5) 0;padding:20px 24px;border-radius:var(--r-lg);text-align:center;
+  background:linear-gradient(135deg,var(--surface-2),var(--surface-3));border:1px solid var(--line);
+  font-family:var(--font-serif);font-size:1.12rem;line-height:1.6;color:var(--ink);font-weight:500}
+.story .think{margin:var(--sp-7) 0 var(--sp-5);padding:22px 24px;border-radius:var(--r-xl);
+  background:color-mix(in srgb,var(--kid-grape) 12%,var(--surface));
+  border:2px dashed color-mix(in srgb,var(--kid-grape) 40%,var(--line))}
+.story .think .lab{display:flex;align-items:center;gap:9px;font-size:.76rem;font-weight:800;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--kid-grape);margin-bottom:10px}
+.story .think p{margin:0;font-size:1.08rem;color:var(--ink)}
+[data-theme="dark"] .story .think{background:color-mix(in srgb,var(--kid-grape) 22%,var(--surface))}
+[data-theme="dark"] .story .think .lab{color:#b9a3f0}
+
+.story-top{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  max-width:var(--read-w);margin:0 auto var(--sp-5)}
+.story-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--r-pill);
+  background:var(--blue-tint);color:var(--blue-ink);font-weight:700;font-size:.84rem}
+.story-foot{max-width:var(--read-w);margin:var(--sp-7) auto 0;display:flex;gap:12px;flex-wrap:wrap}
+.story-foot .btn{flex:1;min-width:150px}
+
+/* ---------- награды ---------- */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sp-3)}
+.badge-card{padding:20px 16px;text-align:center;border-radius:var(--r-lg);border:1px solid var(--line);
+  background:var(--surface);transition:transform var(--t-med) var(--ease-spring)}
+.badge-card .ic{width:54px;height:54px;margin:0 auto 12px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;background:var(--surface-2);color:var(--faint)}
+.badge-card.on .ic{background:linear-gradient(135deg,var(--kid-sun),var(--kid-berry));color:#fff;
+  box-shadow:0 8px 20px -6px color-mix(in srgb,var(--kid-sun) 55%,transparent)}
+.badge-card.on{border-color:color-mix(in srgb,var(--kid-sun) 45%,var(--line))}
+.badge-card:hover{transform:translateY(-3px)}
+.badge-card .nm{font-weight:700;font-size:.92rem;line-height:1.3}
+.badge-card .ds{font-size:.78rem;color:var(--muted);margin-top:4px;line-height:1.4}
+.badge-card:not(.on){opacity:.62}
+
+/* ---------- прогресс-путь на главной ---------- */
+.kid-path{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:14px}
+.kid-path i{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.28);display:block}
+.kid-path i.done{background:#fff}
+.kid-path i.now{background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.32)}
+
+.kid-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3)}
+.kid-stat{padding:16px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);text-align:center}
+.kid-stat .n{font-size:1.7rem;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums;line-height:1.1}
+.kid-stat .l{font-size:.78rem;color:var(--muted);margin-top:4px;font-weight:600}
+
+/* ---------- переключатель режима в настройках ---------- */
+.mode-switch{display:flex;gap:10px;flex-wrap:wrap}
+.mode-chip{display:flex;align-items:center;gap:9px;padding:11px 16px;border-radius:var(--r-md);
+  border:1.5px solid var(--line);font-weight:600;cursor:pointer;transition:all var(--t-fast)}
+.mode-chip.on{border-color:var(--blue);background:var(--blue-tint);color:var(--blue-ink)}
