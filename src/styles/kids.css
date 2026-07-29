@@ -164,3 +164,87 @@
 .mode-chip{display:flex;align-items:center;gap:9px;padding:11px 16px;border-radius:var(--r-md);
   border:1.5px solid var(--line);font-weight:600;cursor:pointer;transition:all var(--t-fast)}
 .mode-chip.on{border-color:var(--blue);background:var(--blue-tint);color:var(--blue-ink)}
+
+/* ============ ИНТЕРАКТИВ И АНИМАЦИИ ============ */
+
+/* полоса прогресса чтения истории */
+.story-progress{position:fixed;top:var(--header-h);left:0;right:0;height:4px;z-index:40;pointer-events:none}
+.story-progress i{display:block;height:100%;width:0;border-radius:0 4px 4px 0;
+  background:linear-gradient(90deg,var(--kid-sun),var(--kid-berry))}
+[dir="rtl"] .story-progress i{margin-inline-start:auto;border-radius:4px 0 0 4px}
+
+/* карточки историй: каскадное появление + счётчик времени чтения */
+@keyframes pop-in{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.story-card{animation:pop-in .38s var(--ease-out) both;transition:transform var(--t-med) var(--ease-spring),
+  box-shadow var(--t-med),border-color var(--t-med)}
+.story-card:active{transform:scale(.97)}
+.story-card .mins{display:inline-flex;align-items:center;gap:4px;font-size:.74rem;color:var(--faint);margin-top:4px}
+.story-card.today{border-color:color-mix(in srgb,var(--kid-sun) 55%,var(--line))}
+.story-card.done .t{color:var(--muted)}
+
+/* «Я прочитал!» — салют */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:210;overflow:hidden}
+.confetti i{position:absolute;top:-14px;width:10px;height:14px;border-radius:2px;opacity:0;
+  animation:fall var(--dur,2.2s) var(--ease) var(--del,0s) forwards}
+@keyframes fall{
+  0%{opacity:0;transform:translateY(0) rotate(0)}
+  10%{opacity:1}
+  100%{opacity:0;transform:translateY(105vh) rotate(var(--rot,540deg))}
+}
+
+/* большая печать «прочитано» */
+@keyframes stamp{0%{opacity:0;transform:scale(1.7) rotate(-14deg)}
+  55%{opacity:1;transform:scale(.92) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.done-stamp{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:var(--r-pill);
+  background:linear-gradient(135deg,var(--kid-leaf),#2f8563);color:#fff;font-weight:800;
+  animation:stamp .55s var(--ease-spring) both;box-shadow:0 10px 26px -8px rgba(63,160,122,.55)}
+
+/* награда: разблокировка */
+@keyframes badge-pop{0%{transform:scale(.5) rotate(-12deg);opacity:0}
+  60%{transform:scale(1.14) rotate(4deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+.badge-card.on .ic{animation:badge-pop .6s var(--ease-spring) both}
+.badge-card{animation:pop-in .35s var(--ease-out) both}
+.badge-card.on::after{content:"";position:absolute;inset:0;border-radius:var(--r-lg);pointer-events:none;
+  background:radial-gradient(circle at 50% 22%,color-mix(in srgb,var(--kid-sun) 26%,transparent),transparent 62%)}
+.badge-card{position:relative}
+
+/* кликабельный вопрос — раскрывается */
+.think{cursor:pointer;transition:transform var(--t-fast) var(--ease),box-shadow var(--t-med)}
+.think:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.think .hint-open{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.84rem;
+  font-weight:700;color:var(--kid-grape)}
+[data-theme="dark"] .think .hint-open{color:#b9a3f0}
+.think .answer{overflow:hidden;max-height:0;opacity:0;
+  transition:max-height .45s var(--ease-out),opacity .3s var(--ease),margin-top .3s}
+.think.open .answer{max-height:420px;opacity:1;margin-top:14px}
+.think .answer p{font-size:1rem;color:var(--ink-2);font-style:italic}
+
+/* путь на главной — пульсация текущей точки */
+@keyframes dot-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}50%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
+.kid-path i.now{animation:dot-pulse 2.4s var(--ease) infinite}
+.kid-path i{transition:background-color .4s var(--ease),transform .3s var(--ease-spring)}
+.kid-path i.done{transform:scale(1.15)}
+
+/* герой: мягкое парение искры */
+@keyframes float-star{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(8deg)}}
+[data-mode="kids"] .hero .star{animation:float-star 7s var(--ease) infinite}
+
+/* счётчики на главной — «наезд» цифры */
+@keyframes count-in{from{opacity:0;transform:translateY(8px) scale(.9)}to{opacity:1;transform:none}}
+.kid-stat .n{animation:count-in .5s var(--ease-spring) both}
+.kid-stat{transition:transform var(--t-med) var(--ease-spring)}
+.kid-stat:hover{transform:translateY(-3px)}
+
+/* следующая история — подсказка внизу читалки */
+.next-peek{margin-top:var(--sp-6);padding:18px 20px;border-radius:var(--r-lg);cursor:pointer;
+  background:var(--surface-2);border:1px dashed var(--line-2);display:flex;align-items:center;gap:14px;
+  transition:background-color var(--t-fast),transform var(--t-fast) var(--ease-spring)}
+.next-peek:hover{background:var(--surface-3);transform:translateY(-2px)}
+.next-peek .lab{font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.next-peek .nm{font-weight:700;margin-top:3px;font-family:var(--font-serif);font-size:1.05rem}
+
+@media (prefers-reduced-motion:reduce){
+  .story-card,.badge-card,.kid-stat .n,.done-stamp,.badge-card.on .ic{animation:none!important}
+  .confetti{display:none!important}
+  [data-mode="kids"] .hero .star,.kid-path i.now{animation:none!important}
+}
