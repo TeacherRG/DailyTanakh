@@ -50,6 +50,13 @@ function CommentaryPanel({ items }) {
   </div>`;
 }
 
+function commentsForVerse(chComm, n) {
+  if (!chComm) return null;
+  if (chComm[String(n)]) return chComm[String(n)];
+  if (chComm['1'] && Object.keys(chComm).length === 1) return chComm['1'];
+  return null;
+}
+
 /* ---------- note ---------- */
 function NoteBlock({ slug, chapter, n, note, editing, setEditing }) {
   const draft = useSignal(note ? note.text : '');
@@ -164,9 +171,10 @@ function PrintSheet({ book, meta, chapter, comm, onClose }) {
       const n = i + 1;
       const note = o.notes ? getNote(meta.slug, chapter, n) : null;
       let cm = [];
-      if (o.comm && chComm && chComm[String(n)]) {
+      const verseComm = commentsForVerse(chComm, n);
+      if (o.comm && verseComm) {
         const L = lang.value;
-        cm = chComm[String(n)].map(c => ({
+        cm = verseComm.map(c => ({
           who: c.en,
           text: L === 'ru' ? (c.textRu || c.textEn || c.textHe)
               : L === 'he' ? (c.textHe || c.textRu || c.textEn)
@@ -327,7 +335,7 @@ export function Reader() {
     const n = i + 1;
     const trans = avail.langs.map(l => ({ lang: l, text: book.text[l] && book.text[l][chapter - 1] ? book.text[l][chapter - 1][i] : '' }))
       .filter(x => x.text);
-    const comm = chComm && chComm[String(n)] ? chComm[String(n)] : null;
+    const comm = commentsForVerse(chComm, n);
     verses.push(html`<${VerseRow} key=${slug + chapter + n} slug=${slug} chapter=${chapter} n=${n}
       he=${heV[i]} trans=${trans} comm=${comm} showHebrew=${s.showHebrew} />`);
   }
