@@ -85,6 +85,10 @@ export default {
     chapterDone: 'Kapitel gelesen',
     inThisCycle: 'Im heutigen Zyklus',
     verseOptions: 'Vers-Aktionen',
+    overview: 'Kapitelüberblick',
+    keyThought: 'Kerngedanke',
+    reflection: 'Frage zum Nachdenken',
+    lesson: 'Lehre des Kapitels',
   },
   library: {
     title: 'Bibliothek',

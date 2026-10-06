@@ -85,6 +85,10 @@ export default {
     chapterDone: 'Chapter read',
     inThisCycle: 'In today’s cycle',
     verseOptions: 'Verse actions',
+    overview: 'Chapter overview',
+    keyThought: 'Key thought',
+    reflection: 'Question to reflect on',
+    lesson: 'Lesson of the chapter',
   },
   library: {
     title: 'Library',
