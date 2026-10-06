@@ -1,7 +1,7 @@
 // Lazy data layer over the bundled offline JSON.
 import { signal } from './html.js';
 
-const cache = { books: null, text: {}, comm: {} };
+const cache = { books: null, text: {}, comm: {}, overview: {} };
 export const booksMeta = signal(null);
 
 export async function loadBooks() {
@@ -26,6 +26,15 @@ export async function loadCommentary(slug) {
     cache.comm[slug] = r.ok ? await r.json() : null;
   } catch { cache.comm[slug] = null; }
   return cache.comm[slug];
+}
+// Chapter overviews (summary, key thoughts, reflection question) — only some books have them.
+export async function loadOverview(slug) {
+  if (slug in cache.overview) return cache.overview[slug];
+  try {
+    const r = await fetch(`data/overview/${slug}.json`);
+    cache.overview[slug] = r.ok ? await r.json() : null;
+  } catch { cache.overview[slug] = null; }
+  return cache.overview[slug];
 }
 
 export function allBooks() { return (cache.books && cache.books.books) || []; }

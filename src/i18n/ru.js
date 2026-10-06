@@ -85,6 +85,10 @@ export default {
     chapterDone: 'Глава прочитана',
     inThisCycle: 'В цикле на сегодня',
     verseOptions: 'Действия со стихом',
+    overview: 'Обзор главы',
+    keyThought: 'Ключевая мысль',
+    reflection: 'Вопрос для размышления',
+    lesson: 'Урок главы',
   },
   library: {
     title: 'Библиотека',

@@ -85,6 +85,10 @@ export default {
     chapterDone: 'הפרק נקרא',
     inThisCycle: 'במחזור של היום',
     verseOptions: 'פעולות על הפסוק',
+    overview: 'סקירת הפרק',
+    keyThought: 'מחשבה מרכזית',
+    reflection: 'שאלה למחשבה',
+    lesson: 'לקח הפרק',
   },
   library: {
     title: 'ספרייה',

@@ -1,5 +1,5 @@
 // DailyTanakh service worker — offline-first.
-const CACHE = 'dailytanakh-v8';
+const CACHE = 'dailytanakh-v9';
 const CORE = [
   './', './index.html', './manifest.webmanifest',
   './src/main.js',

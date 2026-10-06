@@ -4,7 +4,7 @@ import {
   settings, setSettings, toggleTransLang, profile, toggleFavorite, isFavorite,
   getNote, saveNote, markChapterRead, setLastRead, toast,
 } from '../lib/store.js';
-import { loadBook, loadCommentary, getMeta } from '../lib/data.js';
+import { loadBook, loadCommentary, loadOverview, getMeta } from '../lib/data.js';
 import { route, navigate } from '../lib/router.js';
 import { neighbor, availableTrans, refLabel, copyText } from '../lib/util.js';
 import { portionForDay, personalDayIndex } from '../lib/schedule.js';
@@ -47,6 +47,32 @@ function CommentaryPanel({ items }) {
         <div class=${'body' + (isHeb ? ' heb' : '')} dir=${isHeb ? 'rtl' : 'ltr'}>${body}</div>
       </div>`;
     })}
+  </div>`;
+}
+
+/* ---------- chapter overview ---------- */
+function ChapterOverview({ ov }) {
+  const [open, setOpen] = useState(false);
+  return html`<div class=${'ch-overview' + (open ? ' open' : '')} lang="ru" dir="ltr">
+    <button class="ov-head" aria-expanded=${open} onClick=${() => setOpen(v => !v)}>
+      <span class="ov-ic"><${Icon} name="sparkles" size=16 /></span>
+      <span class="grow">
+        <span class="ov-label">${t('reader.overview')}</span>
+        <span class="ov-title">${ov.title}</span>
+      </span>
+      <span class="ov-chev"><${Icon} name="chevronDown" size=18 /></span>
+    </button>
+    ${ov.teaser && html`<p class="ov-teaser">${ov.teaser}</p>`}
+    ${open && html`<div class="ov-body">
+      ${(ov.sections || []).map((sec, i) => html`<div class="ov-sec" key=${i}>
+        <h4>${sec.subtitle}</h4>
+        <p>${sec.text}</p>
+        ${sec.key_thought && html`<blockquote><b>${t('reader.keyThought')}.</b> ${sec.key_thought}</blockquote>`}
+      </div>`)}
+      ${ov.reflection_question && html`<div class="ov-box"><div class="ov-k">${t('reader.reflection')}</div>${ov.reflection_question}</div>`}
+      ${ov.chapter_lesson && html`<div class="ov-box"><div class="ov-k">${t('reader.lesson')}</div>${ov.chapter_lesson}</div>`}
+      ${ov.source_passage && html`<div class="ov-src">${ov.source_passage}</div>`}
+    </div>`}
   </div>`;
 }
 
@@ -218,8 +244,8 @@ export function Reader() {
   useEffect(() => {
     let alive = true;
     setData(d => ({ ...d, loading: true, error: false }));
-    Promise.all([loadBook(slug), loadCommentary(slug)])
-      .then(([book, comm]) => { if (alive) setData({ loading: false, book, comm }); })
+    Promise.all([loadBook(slug), loadCommentary(slug), loadOverview(slug)])
+      .then(([book, comm, overview]) => { if (alive) setData({ loading: false, book, comm, overview }); })
       .catch(() => { if (alive) setData({ loading: false, error: true }); });
     return () => { alive = false; };
   }, [slug]);
@@ -274,6 +300,8 @@ export function Reader() {
   const avail = availableTrans(book, s.transLangs);
   const count = (meta.verseCounts && meta.verseCounts[chapter - 1]) || heV.length;
   const chComm = data.comm && data.comm.chapters ? data.comm.chapters[String(chapter)] : null;
+  const chOverview = data.overview && data.overview.chapters
+    ? data.overview.chapters.find(c => c.chapter_number === chapter) : null;
 
   const prev = neighbor(slug, chapter, -1);
   const next = neighbor(slug, chapter, +1);
@@ -362,6 +390,8 @@ export function Reader() {
     <div class="container">
       ${inCycle && html`<div class="cycle-banner"><${Icon} name="sparkles" size=16 />${t('reader.inThisCycle')}</div>`}
       ${avail.fallback && html`<div class="translit-note"><${Icon} name="info" size=16 />${t('reader.noTranslationHint')}</div>`}
+
+      ${chOverview && html`<${ChapterOverview} key=${slug + chapter} ov=${chOverview} />`}
 
       <div class="reader fade">${verses}</div>
 
